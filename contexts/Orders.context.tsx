@@ -10,7 +10,7 @@ import {
 
 export type OrdersContextProps = {
   orders: Array<Order>;
-  moveOrder: (order:Order, state:string) => void
+  moveOrder: (orderId:Order, state:string) => void
   readyOrder: (orderId:Order) => void
   pickup: (order: Order) => void;
 };
@@ -35,9 +35,10 @@ export function OrdersProvider(props: OrdersProviderProps) {
     });
   }, []);
 
-  const moveOrder = (order: Order, state:"PENDING" | "IN_PROGRESS" | "READY" | "DELIVERED") => {
-    order.state = state;
-    setOrders((prev) => [...prev, order]);
+  const moveOrder = (orderId: Order, state:"PENDING" | "IN_PROGRESS" | "READY" | "DELIVERED") => {
+    orderId.state = state;
+    setOrders(orders.filter(order => order.id != orderId.id));
+    setOrders((prev) => [...prev, orderId]);
 
   };
 
