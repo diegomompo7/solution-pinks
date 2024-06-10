@@ -1,5 +1,6 @@
 import { Order } from "@/dtos/Order.dto";
 import { OrderOrchestrator } from "@/lib";
+
 import {
   ReactNode,
   createContext,
@@ -7,6 +8,8 @@ import {
   useEffect,
   useState,
 } from "react";
+
+import { useRiders } from "./Riders.context";
 
 export type OrdersContextProps = {
   orders: Array<Order>;
@@ -52,6 +55,7 @@ export function OrdersProvider(props: OrdersProviderProps) {
 
   const pickup = (id: string) => {
 
+
     const orderId = orders.find(order => order.id === id)!
 
     console.log(orderId)
@@ -60,7 +64,7 @@ export function OrdersProvider(props: OrdersProviderProps) {
 
     setOrders(orders.filter(order => order.id != orderId.id));
     setOrders((prev) => [...prev, orderId]);
-  };
+  }
 
 
   const context = {
@@ -78,3 +82,7 @@ export function OrdersProvider(props: OrdersProviderProps) {
 }
 
 export const useOrders = () => useContext(OrdersContext);
+function setAssignedOrders(arg0: any) {
+  throw new Error("Function not implemented.");
+}
+

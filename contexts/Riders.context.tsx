@@ -15,7 +15,8 @@ export type RidersContextProps = {
 
 export const RidersContext = createContext<RidersContextProps>(
   // @ts-ignore
-  {}
+  {
+  }
 );
 
 export type RidersProviderProps = {
@@ -51,26 +52,24 @@ export function RidersProvider(props: RidersProviderProps) {
     
   }, [orders]);
 
+
   useEffect(() => {
-    const order = orders.find((order) =>  order.state === "DELIVERED" && !assignedOrders.includes(order.id));
-    console.log(order)
-    if (order) {
-      setAssignedOrders(assignedOrders.filter(assigned => assigned !== order.id));
-      setRiders(riders.filter(rider => rider.orderWanted != order.id));
-    }
+    const orderDelvietred = orders.filter((order) =>  order.state === "DELIVERED") ;
+    orderDelvietred.map((order) => {
+      setRiders(riders.filter(r => r.orderWanted != order.id))
+    })
 
-      console.log(riders)
-    
-    
-  }, [orders]);
+  },[orders])
 
 
-  const context = { riders };
+  const context = { riders, setRiders };
   return (
     <RidersContext.Provider value={context}>
       {props.children}
     </RidersContext.Provider>
   );
 }
+
+
 
 export const useRiders = () => useContext(RidersContext);
