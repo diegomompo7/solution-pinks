@@ -9,7 +9,7 @@ export default function Kanban() {
   const { riders } = useRiders();
   const { orders, moveOrder} = useOrders();
 
-  const handleOrderClick = (id: string, state:"PENDING" | "IN_PROGRESS" | "READY" | "DELIVERED") => {
+  const handleOrderClick = (id: string, state:"PENDING" | "IN_PROGRESS" | "READY" | "COLLECTED" | "DELIVERED") => {
     const orderId = orders.find(order => order.id === id)!
     moveOrder(orderId, state)
   };
@@ -28,7 +28,8 @@ export default function Kanban() {
          handleOrderClick(e.id, "READY")
         } />
       <Column title="Listo" orders={orders.filter((i) => i.state === "READY")} onClick={(e) =>
-         handleOrderClick(e.id, "DELIVERED")}/>
+         handleOrderClick(e.id, "COLLECTED")}/>
+      <Column title="Entregado" orders={orders.filter((i) => i.state === "DELIVERED")}/>
     </section>
   );
 }

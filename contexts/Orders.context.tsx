@@ -35,8 +35,9 @@ export function OrdersProvider(props: OrdersProviderProps) {
     });
   }, []);
 
-  const moveOrder = (orderId: Order, state:"PENDING" | "IN_PROGRESS" | "READY" | "DELIVERED") => {
+  const moveOrder = (orderId: Order, state:"PENDING" | "IN_PROGRESS" | "READY" | "COLLECTED" | "DELIVERED") => {
     orderId.state = state;
+    console.log(orderId)
     setOrders(orders.filter(order => order.id != orderId.id));
     setOrders((prev) => [...prev, orderId]);
 
@@ -49,10 +50,16 @@ export function OrdersProvider(props: OrdersProviderProps) {
   };
 
 
-  const pickup = (order: Order) => {
-    alert(
-      "necesitamos eliminar del kanban a la orden recogida! Rapido! antes que nuestra gente de tienda se confunda!"
-    );
+  const pickup = (id: string) => {
+
+    const orderId = orders.find(order => order.id === id)!
+
+    console.log(orderId)
+
+    orderId.state = "DELIVERED"
+
+    setOrders(orders.filter(order => order.id != orderId.id));
+    setOrders((prev) => [...prev, orderId]);
   };
 
 
