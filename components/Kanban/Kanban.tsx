@@ -27,7 +27,8 @@ export default function Kanban() {
       <Column title="En preparación" orders={orders.filter((i) => i.state === "IN_PROGRESS") }         onClick={(e) =>
          handleOrderClick(e.id, "READY")
         } />
-      <Column title="Listo" orders={orders.filter((i) => i.state === "READY")} />
+      <Column title="Listo" orders={orders.filter((i) => i.state === "READY")} onClick={(e) =>
+         handleOrderClick(e.id, "DELIVERED")}/>
     </section>
   );
 }

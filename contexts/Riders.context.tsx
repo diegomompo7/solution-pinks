@@ -28,7 +28,7 @@ export function RidersProvider(props: RidersProviderProps) {
   const { orders, pickup, readyOrder } = useOrders();
 
   useEffect(() => {
-    const order = orders.find((order) =>  order.state === "READY" && !assignedOrders.includes(order.id));
+    const order = orders.find((order) =>  order.state === "DELIVERED" && !assignedOrders.includes(order.id));
     if (order) {
       setAssignedOrders((prev) => [...prev, order.id]);
       setTimeout(() => {
@@ -40,7 +40,7 @@ export function RidersProvider(props: RidersProviderProps) {
           },
         ]);
         readyOrder(order)
-      }, getRandomInterval(4_000, 10_000));
+      }, );
     }
   }, [orders]);
 
