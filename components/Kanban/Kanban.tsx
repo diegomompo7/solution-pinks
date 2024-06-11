@@ -7,12 +7,17 @@ import { useEffect } from "react";
 
 export default function Kanban() {
   const { riders } = useRiders();
-  const { orders, moveOrder} = useOrders();
+  const { orders, moveOrder, deleteOrder} = useOrders();
 
   const handleOrderClick = (id: string, state:"PENDING" | "IN_PROGRESS" | "READY" | "COLLECTED" | "DELIVERED") => {
     const orderId = orders.find(order => order.id === id)!
     moveOrder(orderId, state)
   };
+
+  const handlDeleteOrder = (id: string) => {
+    const orderId = orders.find(order => order.id === id)!
+    deleteOrder(orderId)
+  }
 
 
   return (
@@ -23,6 +28,7 @@ export default function Kanban() {
         onClick={(e) =>
          handleOrderClick(e.id, "IN_PROGRESS")
         }
+        onDelete={handlDeleteOrder}
       />
       <Column title="En preparación" orders={orders.filter((i) => i.state === "IN_PROGRESS") }         onClick={(e) =>
          handleOrderClick(e.id, "READY")

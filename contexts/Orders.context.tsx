@@ -15,6 +15,7 @@ export type OrdersContextProps = {
   orders: Array<Order>;
   moveOrder: (orderId:Order, state:string) => void
   readyOrder: (orderId:Order) => void
+  deleteOrder: (orderId:Order) => void
   pickup: (order: Order) => void;
 };
 
@@ -40,14 +41,16 @@ export function OrdersProvider(props: OrdersProviderProps) {
 
   const moveOrder = (orderId: Order, state:"PENDING" | "IN_PROGRESS" | "READY" | "COLLECTED" | "DELIVERED") => {
     orderId.state = state;
-    console.log(orderId)
     setOrders(orders.filter(order => order.id != orderId.id));
     setOrders((prev) => [...prev, orderId]);
 
   };
 
+  const deleteOrder = (orderId: Order) => {
+    setOrders(orders.filter(order => order.id != orderId.id));
+  }
+
   const readyOrder = (orderId: Order) => {
-    console.log(orderId)
     setOrders(orders.filter(order => order.id != orderId.id));
 
   };
@@ -71,6 +74,7 @@ export function OrdersProvider(props: OrdersProviderProps) {
     orders,
     moveOrder,
     readyOrder,
+    deleteOrder,
     pickup,
   };
 

@@ -28,11 +28,9 @@ export function RidersProvider(props: RidersProviderProps) {
   const [assignedOrders, setAssignedOrders] = useState<string[]>([]);
   const { orders, pickup, readyOrder } = useOrders();
 
-  console.log(assignedOrders)
 
   useEffect(() => {
     const order = orders.find((order) =>  order.state === "COLLECTED" && !assignedOrders.includes(order.id));
-    console.log(order)
     if (order) {
       setAssignedOrders((prev) => [...prev, order.id]);
       setTimeout(() => {
@@ -46,8 +44,6 @@ export function RidersProvider(props: RidersProviderProps) {
         readyOrder(order)
       }, );
     }
-
-      console.log(riders)
     
     
   }, [orders]);
