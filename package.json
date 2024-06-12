@@ -2,6 +2,7 @@
   "name": "pinks-tech-test",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -10,16 +11,23 @@
   },
   "dependencies": {
     "classnames": "^2.5.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mongodb": "^6.7.0",
+    "mongoose": "^8.4.1",
     "next": "14.2.3",
+    "node": "^22.3.0",
     "react": "^18",
     "react-dom": "^18",
     "react-icons": "^5.2.1",
-    "sass": "^1.76.0"
+    "sass": "^1.76.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
   },
   "devDependencies": {
+    "@types/express": "^4.17.21",
     "@types/node": "^20",
     "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "typescript": "^5"
+    "@types/react-dom": "^18"
   }
 }
