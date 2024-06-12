@@ -30,7 +30,7 @@ export function RidersProvider(props: RidersProviderProps) {
 
 
   useEffect(() => {
-    const order = orders.find((order) =>  order.state === "COLLECTED" && !assignedOrders.includes(order.id));
+    const order = []
     if (order) {
       setAssignedOrders((prev) => [...prev, order.id]);
       setTimeout(() => {
@@ -41,7 +41,7 @@ export function RidersProvider(props: RidersProviderProps) {
             pickup,
           },
         ]);
-        readyOrder(order)
+        //readyOrder(order)
       }, );
     }
     
@@ -50,7 +50,7 @@ export function RidersProvider(props: RidersProviderProps) {
 
 
   useEffect(() => {
-    const orderDelvietred = orders.filter((order) =>  order.state === "DELIVERED") ;
+    const orderDelvietred = []
     orderDelvietred.map((order) => {
       setRiders(riders.filter(r => r.orderWanted != order.id))
     })

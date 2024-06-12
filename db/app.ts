@@ -1,6 +1,8 @@
 import express from "express";
 import { mongoConnect } from "./mongo-repository";
 
+export const app = express();
+
 const init = async () => {
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
@@ -20,6 +22,5 @@ mongoConnect();
 init();
 
 // Configuración del server
-export const app = express();
 app.use(cors());
 app.use(express.json());

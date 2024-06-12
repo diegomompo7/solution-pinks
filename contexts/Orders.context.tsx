@@ -1,5 +1,8 @@
-import { Order } from "@/dtos/Order.dto";
+import { Order} from "@/dtos/Order.dto";
+import { IOrder } from "../db/models/Order";
 import { OrderOrchestrator } from "@/lib";
+import express, { NextFunction, Request, Response } from "express";
+import {getOrders, postOrder} from "../db/crud"
 
 import {
   ReactNode,
@@ -9,10 +12,9 @@ import {
   useState,
 } from "react";
 
-import { useRiders } from "./Riders.context";
 
 export type OrdersContextProps = {
-  orders: Array<Order>;
+  orders: Array<IOrder>;
   moveOrder: (orderId:Order, state:string) => void
   readyOrder: (orderId:Order) => void
   deleteOrder: (orderId:Order) => void
@@ -29,17 +31,25 @@ export type OrdersProviderProps = {
 };
 
 export function OrdersProvider(props: OrdersProviderProps) {
-  const [orders, setOrders] = useState<Array<Order>>([]);
+  const [orders, setOrders] = useState<IOrder>();
 
   useEffect(() => {
     const orderOrchestrator = new OrderOrchestrator();
     const listener = orderOrchestrator.run();
     listener.on("order", (order) => {
-      setOrders((prev) => [...prev, order]);
+      async (req: Request, res: Response, next: NextFunction) => {
+        const newOrder = await postOrder(order);
+        try {
+          res.json(newOrder);
+        } catch (err) {
+          next(err);
+        }
+      }
     });
   }, []);
 
-  const moveOrder = (orderId: Order, state:"PENDING" | "IN_PROGRESS" | "READY" | "COLLECTED" | "DELIVERED") => {
+
+  /*const moveOrder = (orderId: Order, state:"PENDING" | "IN_PROGRESS" | "READY" | "COLLECTED" | "DELIVERED") => {
     orderId.state = state;
     setOrders(orders.filter(order => order.id != orderId.id));
     setOrders((prev) => [...prev, orderId]);
@@ -68,14 +78,14 @@ export function OrdersProvider(props: OrdersProviderProps) {
     setOrders(orders.filter(order => order.id != orderId.id));
     setOrders((prev) => [...prev, orderId]);
   }
-
+*/
 
   const context = {
     orders,
-    moveOrder,
+    /*moveOrder,
     readyOrder,
     deleteOrder,
-    pickup,
+    pickup,*/
   };
 
   return (
