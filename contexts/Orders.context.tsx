@@ -39,6 +39,20 @@ export function OrdersProvider(props: OrdersProviderProps) {
     });
   }, []);
 
+  useEffect(() => {
+    fetch("http://localhost:5174/", {
+      method: "POST", // or 'PUT'
+      body: JSON.stringify(orders), // data can be `string` or {object}!
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .catch((error) => console.error("Error:", error))
+      .then((response) => console.log("Success:", response));
+
+  },[orders])
+  
   const moveOrder = (orderId: Order, state:"PENDING" | "IN_PROGRESS" | "READY" | "COLLECTED" | "DELIVERED") => {
     orderId.state = state;
     setOrders(orders.filter(order => order.id != orderId.id));

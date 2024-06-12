@@ -6,7 +6,7 @@
     "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
-    "module": "esnext",
+    "module": "commonjS",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
