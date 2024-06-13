@@ -32,6 +32,7 @@ export default function Column(props: ColumnProps) {
             ))}
           </div>
         </div>
+        
         <MdDelete size={32} onClick={() => props.onDelete && props.onDelete(order.id)} />
         </div>
       ))}
