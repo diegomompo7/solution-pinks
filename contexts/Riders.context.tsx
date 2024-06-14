@@ -6,7 +6,6 @@ import {
   useState,
 } from "react";
 import { useOrders } from "./Orders.context";
-import { getRandomInterval } from "@/lib/utils";
 import { Rider } from "@/dtos/Rider.dto";
 
 export type RidersContextProps = {
@@ -26,7 +25,7 @@ export type RidersProviderProps = {
 export function RidersProvider(props: RidersProviderProps) {
   const [riders, setRiders] = useState<Array<Rider>>([]);
   const [assignedOrders, setAssignedOrders] = useState<string[]>([]);
-  const { orders, pickup, readyOrder } = useOrders();
+  const { orders, pickup } = useOrders();
 
 
   useEffect(() => {
@@ -41,7 +40,6 @@ export function RidersProvider(props: RidersProviderProps) {
             pickup,
           },
         ]);
-        readyOrder(order)
       }, );
     }
     

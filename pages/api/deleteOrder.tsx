@@ -4,8 +4,9 @@ export default function handler(
   res: NextApiResponse
 ) {
   if (req.method === 'DELETE') {
-    const { id } = req.query; 
-    res.status(200).json({ message: `Order with ID ${id} deleted successfully` });
+    const { id, order } = req.body;
+    const data = order.filter((order: { id: string }) => order.id !== id);
+    res.status(200).json({ message: `Order with ID ${id} deleted successfully`, data: data });
   } else {
     res.setHeader('Allow', ['DELETE']);
     res.status(405).end(`Method ${req.method} Not Allowed`);

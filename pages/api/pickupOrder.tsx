@@ -6,13 +6,13 @@ export default function handler(
   res: NextApiResponse
 ) {
   if (req.method === 'PUT') {
-    const {id, state, order } = req.body;
+    const {id, order } = req.body;
 
     const orderId = order.find((o:Order) => o.id === id)
-    const updatedOrder = orderId.state = state
-    const data = order.map((order: { id: string; }) => order.id === updatedOrder.id ? updatedOrder : order);
+    orderId.state = "DELIVERED"
+    const data = order.map((order: { id: string; }) => order.id === orderId.id ? orderId : order);
 
-    res.status(200).json({ message: `order ${id} change state to ${state}`, data: data });
+    res.status(200).json({ message: `order ${id} change state to DELIVERED`, data: data });
     
   } else {
     res.setHeader('Allow', ['PUT']);

@@ -12,14 +12,12 @@ import {
 
 export type OrdersContextProps = {
   orders: Array<Order>;
-  moveOrder: (orderId:Order, state:string) => void
-  readyOrder: (orderId:Order) => void
-  deleteOrder: (orderId:Order) => void
+  moveOrder: (id: string, state: string) => void
+  deleteOrder: (id: string) => void
   pickup: (order: Order) => void;
 };
 
 export const OrdersContext = createContext<OrdersContextProps>(
-  // @ts-ignore
   {}
 );
 
@@ -38,18 +36,22 @@ export function OrdersProvider(props: OrdersProviderProps) {
 
     });
   }, []);
-  
-  const moveOrder = async (orderId: Order, state:"PENDING" | "IN_PROGRESS" | "READY" | "COLLECTED" | "DELIVERED" | "ANULADO") => {
+
+
+
+  const moveOrder = async (id: string, state: "PENDING" | "IN_PROGRESS" | "READY" | "COLLECTED" | "DELIVERED" | "ANULADO") => {
     try {
-      const response = await fetch(`/api/moveOrder`, {
+      const response = await fetch(`/api/moveOrder?id=${id}&state=${state}`, {
         method: 'PUT',
-        body: JSON.stringify({id: orderId.id, state: state}),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: id, state, order: orders }),
       });
 
       if (response.ok) {
-        orderId.state = state;
-        setOrders(orders.filter(order => order.id != orderId.id));
-        setOrders((prev) => [...prev, orderId]);
+        const data = await response.json()
+        setOrders(data.data);
 
       } else {
         console.error('Failed to move order');
@@ -60,16 +62,19 @@ export function OrdersProvider(props: OrdersProviderProps) {
 
   };
 
-  const deleteOrder = async (orderId: Order) => {
+  const deleteOrder = async (id: string) => {
     try {
-      const response = await fetch(`/api/deleteOrders`, {
+      const response = await fetch(`/api/deleteOrder`, {
         method: 'DELETE',
-        body: orderId.id,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: id, order: orders }),
       });
 
       if (response.ok) {
-        // Eliminar la orden localmente después de que se haya eliminado en el servidor
-        setOrders(orders.filter(order => order.id !== orderId.id));
+        const data = await response.json()
+        setOrders(data.data);
       } else {
         console.error('Failed to delete order');
       }
@@ -78,14 +83,28 @@ export function OrdersProvider(props: OrdersProviderProps) {
     }
   };
 
+  const pickup = async (id: string) => {
 
-  const readyOrder = (orderId: Order) => {
-    setOrders(orders.filter(order => order.id != orderId.id));
+    try {
+      const response = await fetch(`/api/pickupOrder?id=${id}}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: id, order: orders }),
+      });
 
-  };
+      if (response.ok) {
+        const data = await response.json()
+        setOrders(data.data);
 
+      } else {
+        console.error('Failed to move order');
+      }
+    } catch (error) {
+      console.error('Error moving order:', error);
+    }
 
-  const pickup = (id: string) => {
 
 
     const orderId = orders.find(order => order.id === id)!
@@ -102,7 +121,6 @@ export function OrdersProvider(props: OrdersProviderProps) {
   const context = {
     orders,
     moveOrder,
-    readyOrder,
     deleteOrder,
     pickup,
   };
