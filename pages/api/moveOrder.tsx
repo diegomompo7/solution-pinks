@@ -7,7 +7,7 @@ export default function handler(
 ) {
   if (req.method === 'PUT') {
     const {id, state, order } = req.body;
-
+    console.log(order, id, state)
     const orderId = order.find((o:Order) => o.id === id)
     const updatedOrder = orderId.state = state
     const data = order.map((order: { id: string; }) => order.id === updatedOrder.id ? updatedOrder : order);

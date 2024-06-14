@@ -41,7 +41,7 @@ export function OrdersProvider(props: OrdersProviderProps) {
 
   const moveOrder = async (id: string, state: "PENDING" | "IN_PROGRESS" | "READY" | "COLLECTED" | "DELIVERED" | "ANULADO") => {
     try {
-      const response = await fetch(`/api/moveOrder?id=${id}&state=${state}`, {
+      const response = await fetch(`/api/moveOrder`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -86,7 +86,7 @@ export function OrdersProvider(props: OrdersProviderProps) {
   const pickup = async (id: string) => {
 
     try {
-      const response = await fetch(`/api/pickupOrder?id=${id}}`, {
+      const response = await fetch(`/api/pickupOrder`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

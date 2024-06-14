@@ -5,6 +5,7 @@ export default function handler(
 ) {
   if (req.method === 'DELETE') {
     const { id, order } = req.body;
+    console.log(order)
     const data = order.filter((order: { id: string }) => order.id !== id);
     res.status(200).json({ message: `Order with ID ${id} deleted successfully`, data: data });
   } else {
